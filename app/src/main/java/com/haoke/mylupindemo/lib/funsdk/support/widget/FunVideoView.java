@@ -89,8 +89,7 @@ public class FunVideoView extends LinearLayout implements IFunSDKResult {
 	private boolean mIsFishEyeEnable = false;
 	
 	private SDK_FishEyeFrame mFishEyeFrame = null;
-	
-	
+	public int CurrChannel = 0;		//当前播放通道号,默认为零
 	public FunVideoView(Context context) {
 		super(context);
         mContext = context;

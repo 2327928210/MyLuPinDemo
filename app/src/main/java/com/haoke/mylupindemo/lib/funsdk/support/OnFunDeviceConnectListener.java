@@ -16,4 +16,6 @@ public interface OnFunDeviceConnectListener extends OnFunListener {
 	 * @param funDevice
 	 */
 	void onDeviceDisconnected(final FunDevice funDevice);
+
+
 }

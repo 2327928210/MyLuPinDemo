@@ -938,10 +938,9 @@ public class FunSupport implements IFunSDKResult {
         return (result == 0);
     }
 
-    /********************************************************************************
-     * 用户信息关接口
-     */
+
     /**
+     * 用户信息关接口
      * @return
      */
     public boolean getUserInfo() {
@@ -979,7 +978,6 @@ public class FunSupport implements IFunSDKResult {
      */
     /**
      * 请求用户获取设备列表
-     *
      * @return 请求是否成功
      */
     public boolean requestDeviceList() {

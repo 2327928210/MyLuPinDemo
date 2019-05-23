@@ -1,9 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.haoke.mylupindemo.SNConnectActivity">
+    tools:context="com.haoke.mylupindemo.SNConnectActivity"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/mypalyer"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="#ff000000">
 
-</android.support.constraint.ConstraintLayout>
+        <com.haoke.mylupindemo.lib.funsdk.support.widget.FunVideoView
+            android:id="@+id/funVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/textVideoStat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="#40000000"
+            android:textColor="#ffffffff"
+            android:textSize="14dp" />
+
+        <RelativeLayout
+            android:id="@+id/layout_recording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="28dp"
+            android:visibility="invisible">
+
+            <ImageView
+                android:id="@+id/img_recording"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/recording" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/img_recording"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="录制中" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂停播放"
+            android:padding="2dp"/>
+        <Button
+            android:id="@+id/resumButton"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="播放"
+            android:padding="2dp"/>
+        <Button
+            android:id="@+id/switchButton"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="高清-标清"
+            android:padding="2dp"/>
+        <Button
+            android:id="@+id/qpButton"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全屏切换"
+            android:padding="2dp"/>
+    </LinearLayout>
+
+</LinearLayout>

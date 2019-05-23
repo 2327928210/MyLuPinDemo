@@ -459,7 +459,6 @@ public class DeviceWifiManager {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for (ScanResult result : mWifiManager.getScanResults()) {
