@@ -11,7 +11,6 @@ import com.haoke.mylupindemo.lib.funsdk.support.FunSupport;
  */
 
 public class MyApplication extends Application{
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,10 +29,10 @@ public class MyApplication extends Application{
                 cachePath, 				// 缓存目录
                 20 * 1024 * 1024		// 20M的本地缓存空间
         );
+
     }
 
     public void exit() {
-
         FunSupport.getInstance().term();
     }
 

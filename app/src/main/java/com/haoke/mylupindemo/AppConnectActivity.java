@@ -282,13 +282,11 @@ public class AppConnectActivity extends AppCompatActivity implements MediaPlayer
         Log.d(Tag, "onNetWorkState : " + state + ", " + type + ", " + ssid);
 
         if (state == state.CONNECTED) {
-
             FunDevice funDevice = FunSupport.getInstance().findAPDevice(ssid);
             Log.i(Tag, "onDeviceDisconnected----------------" + new Gson().toJson(funDevice));
             if (null != funDevice) {
                 funDevice.devIp = FunSupport.getInstance().getDeviceWifiManager().getGatewayIp();
             }
-
         }
 
     }

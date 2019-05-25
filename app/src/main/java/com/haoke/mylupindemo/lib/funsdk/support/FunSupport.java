@@ -180,9 +180,7 @@ public class FunSupport implements IFunSDKResult {
 
     public void init(Context context) {
         int result = 0;
-
         mContext = context;
-
         // 初始化目录
         FunPath.init(context, context.getPackageName());
 

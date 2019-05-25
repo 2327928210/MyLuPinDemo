@@ -9,6 +9,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.opengl.GLSurfaceView;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -46,7 +47,6 @@ import java.util.Locale;
 public class FunVideoView extends LinearLayout implements IFunSDKResult {
 
 	private final String TAG = "FunVideoView";
-	
 	private final int STAT_STOPPED = 0;
 	private final int STAT_PLAYING = 1;
 	private final int STAT_PAUSED = 2;
@@ -436,6 +436,8 @@ public class FunVideoView extends LinearLayout implements IFunSDKResult {
 		if ( mVideoUrl.startsWith("real://") ) {
 			if ( !mIsPlaying ) {
 				// 播放实时视频
+
+				Log.i("myplayer","getUserId--------"+getUserId());
 				mPlayerHandler = FunSDK.MediaRealPlay(
 						getUserId(),
 						playPath,

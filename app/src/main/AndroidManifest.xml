@@ -49,7 +49,8 @@
         </activity>
         <activity android:name=".AppConnectActivity" />
         <activity android:name=".SNConnectActivity" />
-        <activity android:name=".LANConnectActivity"></activity>
+        <activity android:name=".LANConnectActivity" />
+        <activity android:name=".ChangeDevicePasswordActivity"></activity>
     </application>
 
 </manifest>

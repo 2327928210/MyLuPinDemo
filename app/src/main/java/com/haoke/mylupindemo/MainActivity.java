@@ -8,8 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.haoke.mylupindemo.lib.funsdk.support.FunSupport;
+import com.lib.FunSDK;
+
+import static com.haoke.mylupindemo.R.id.edit_oldpassword;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    private Button btn_app,btn_lan,btn_sn;
+    private Button btn_app,btn_lan,btn_sn,btn_password;
     private EditText editSN;
 
     @Override
@@ -17,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btn_password= (Button) findViewById(R.id.btn_changepassword);
         btn_app= (Button) findViewById(R.id.btn_app);
         btn_lan= (Button) findViewById(R.id.btn_lan);
         btn_sn= (Button) findViewById(R.id.btn_sn);
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_app.setOnClickListener(this);
         btn_lan.setOnClickListener(this);
         btn_sn.setOnClickListener(this);
+        btn_password.setOnClickListener(this);
 
     }
 
@@ -52,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.setClass(MainActivity.this,SNConnectActivity.class);
                     startActivity(intent);
                 }
+                break;
+            case R.id.btn_changepassword:
+                intent.setClass(MainActivity.this,ChangeDevicePasswordActivity.class);
+                startActivity(intent);
 
                 break;
         }

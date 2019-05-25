@@ -26,6 +26,7 @@
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="c355c4e11e0ebbb0"
         android:hint="请输入设备序列号" />
 
     <Button
@@ -34,5 +35,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="序列号连接" />
+
+    <Button
+        android:id="@+id/btn_changepassword"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="修改设密码" />
 
 </LinearLayout>

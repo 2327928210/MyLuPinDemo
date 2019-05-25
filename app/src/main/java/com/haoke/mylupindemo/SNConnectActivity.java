@@ -3,7 +3,6 @@ package com.haoke.mylupindemo;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,37 +11,35 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.haoke.mylupindemo.lib.funsdk.support.FunDevicePassword;
 import com.haoke.mylupindemo.lib.funsdk.support.FunError;
 import com.haoke.mylupindemo.lib.funsdk.support.FunSupport;
 import com.haoke.mylupindemo.lib.funsdk.support.OnFunDeviceConnectListener;
+import com.haoke.mylupindemo.lib.funsdk.support.OnFunDeviceListener;
 import com.haoke.mylupindemo.lib.funsdk.support.OnFunDeviceOptListener;
+import com.haoke.mylupindemo.lib.funsdk.support.models.FunDevType;
 import com.haoke.mylupindemo.lib.funsdk.support.models.FunDevice;
 import com.haoke.mylupindemo.lib.funsdk.support.models.FunStreamType;
-import com.haoke.mylupindemo.lib.funsdk.support.utils.APAutomaticSwitch;
-import com.haoke.mylupindemo.lib.funsdk.support.utils.WifiStateListener;
 import com.haoke.mylupindemo.lib.funsdk.support.widget.FunVideoView;
 import com.haoke.mylupindemo.lib.sdk.struct.H264_DVR_FILE_DATA;
 import com.lib.FunSDK;
 
-import java.util.List;
+import static com.haoke.mylupindemo.R.id.edit_oldpassword;
 
 
-public class SNConnectActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, View.OnClickListener, OnFunDeviceOptListener, OnFunDeviceConnectListener, WifiStateListener {
+public class SNConnectActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnInfoListener, View.OnClickListener, OnFunDeviceOptListener, OnFunDeviceConnectListener,OnFunDeviceListener {
 
     private FunVideoView funVideoView;
     private TextView textVideoStat;
     private Button pauseButton, resumButton, switchButton, qpButton;
-
     private String Tag = "myplayer";
     private FunDevice mFunDevice = null;
-    private APAutomaticSwitch mAPSwitcher = null;
     private String svnStr="";
-
+    private final FunDevType[] mSupportDevTypes = { FunDevType.EE_DEV_NORMAL_MONITOR,
+            FunDevType.EE_DEV_INTELLIGENTSOCKET, FunDevType.EE_DEV_SMALLEYE };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_connect);
+        setContentView(R.layout.activity_snconnect);
 
         funVideoView = (FunVideoView) findViewById(R.id.funVideoView);
         textVideoStat = (TextView) findViewById(R.id.textVideoStat);
@@ -60,44 +57,36 @@ public class SNConnectActivity extends AppCompatActivity implements MediaPlayer.
         funVideoView.setOnPreparedListener(this);
         funVideoView.setOnErrorListener(this);
         funVideoView.setOnInfoListener(this);
-
+        Intent intent = getIntent();
+        svnStr=intent.getStringExtra("snStr");
+        mFunDevice = FunSupport.getInstance().buildTempDeivce(mSupportDevTypes[0], svnStr);
+        boolean b = FunSupport.getInstance().requestDeviceStatus(mFunDevice);
+        // 库函数方式本地保存密码
+//        if (FunSupport.getInstance().getSaveNativePassword()) {
+//            FunSDK.DevSetLocalPwd(mFunDevice.getDevSn(), "admin", "");
+//            // 如果设置了使用本地保存密码，则将密码保存到本地文件
+//        }
+        Log.i(Tag, "requestDeviceStatus----------------" +b);
         Log.i(Tag, "startPlay----------------" + new Gson().toJson(mFunDevice));
         // 注册设备操作回调
         FunSupport.getInstance().registerOnFunDeviceOptListener(this);
         FunSupport.getInstance().registerOnFunDeviceConnectListener(this);
+// 监听设备类事件
+        FunSupport.getInstance().registerOnFunDeviceListener(this);
 
-        Intent intent = getIntent();
-        svnStr=intent.getStringExtra("snStr");
         startPlay();
     }
 
 
     //Todo 开始播放视频
     public void startPlay() {
-//        FunDevicePassword.getInstance().saveDevicePassword(mFunDevice.getDevSn(), mEditDevLoginPasswd.getText().toString().trim());
-//        FunSDK.DevSetLocalPwd(mFunDevice.getDevSn(), "admin", mEditDevLoginPasswd.getText().toString().trim());
-//        FunDevicePassword.getInstance().saveDevicePassword(svnStr,"");
-//        FunSDK.DevSetLocalPwd(svnStr, "admin", "");
+
         Log.i(Tag, "startPlay------svnStr----------"+ svnStr);
         textVideoStat.setText(R.string.media_player_buffering);
         funVideoView.stopPlayback();
         funVideoView.setRealDevice(svnStr, funVideoView.CurrChannel);
     }
 
-    //Todo 开始播放视频
-//    public void startPlay() {
-////        FunDevicePassword.getInstance().saveDevicePassword(mFunDevice.getDevSn(), mEditDevLoginPasswd.getText().toString().trim());
-////        FunSDK.DevSetLocalPwd(mFunDevice.getDevSn(), "admin", mEditDevLoginPasswd.getText().toString().trim());
-//        FunDevicePassword.getInstance().saveDevicePassword(svnStr,"");
-//        FunSDK.DevSetLocalPwd(svnStr, "admin", "");
-//
-//        Log.i(Tag, "startPlay----------------" + new Gson().toJson(FunSupport.getInstance().getAPDeviceList()));
-//        textVideoStat.setText(R.string.media_player_buffering);
-//        funVideoView.stopPlayback();
-//        String deviceIp = FunSupport.getInstance().getDeviceWifiManager().getGatewayIp();
-//        funVideoView.setRealDevice(deviceIp, funVideoView.CurrChannel);
-//
-//    }
 
     //Todo 暂停播放视频
     private void pauseMedia() {
@@ -284,21 +273,45 @@ public class SNConnectActivity extends AppCompatActivity implements MediaPlayer.
         Log.i(Tag, "onDeviceDisconnected----------------" + new Gson().toJson(funDevice));
     }
 
+
     @Override
-    public void onNetWorkState(NetworkInfo.State state, int type, String ssid) {
-        Log.d(Tag, "onNetWorkState : " + state + ", " + type + ", " + ssid);
-
-        if (state == state.CONNECTED) {
-
-            FunDevice funDevice = FunSupport.getInstance().findAPDevice(ssid);
-            Log.i(Tag, "onDeviceDisconnected----------------" + new Gson().toJson(funDevice));
-            if (null != funDevice) {
-                funDevice.devIp = FunSupport.getInstance().getDeviceWifiManager().getGatewayIp();
-            }
-
-        }
-
+    public void onDeviceListChanged() {
+        Log.i(Tag, "onDeviceListChanged----------------");
     }
 
+    @Override
+    public void onDeviceStatusChanged(FunDevice funDevice) {
+        Log.i(Tag, "onDeviceStatusChanged----------------" + new Gson().toJson(funDevice));
+    }
+
+    @Override
+    public void onDeviceAddedSuccess() {
+        Log.i(Tag, "onDeviceAddedSuccess----------------");
+    }
+
+    @Override
+    public void onDeviceAddedFailed(Integer errCode) {
+        Log.i(Tag, "onDeviceAddedFailed----------------");
+    }
+
+    @Override
+    public void onDeviceRemovedSuccess() {
+        Log.i(Tag, "onDeviceRemovedSuccess----------------");
+    }
+
+    @Override
+    public void onDeviceRemovedFailed(Integer errCode) {
+        Log.i(Tag, "onDeviceRemovedFailed----------------");
+    }
+
+    @Override
+    public void onAPDeviceListChanged() {
+        Log.i(Tag, "onAPDeviceListChanged----------------" );
+    }
+
+    @Override
+    public void onLanDeviceListChanged() {
+        Log.i(Tag, "onLanDeviceListChanged----------------");
+    }
 }
 
